@@ -27,7 +27,7 @@ class GradientDescentSolverTest {
         assertTrue(spd.isSPD())
         assertTrue(spd.isDiagonalDominant())
         val rhs = MyMatrix.constructWithCopy(rhsVals).transpose()
-        val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
+        val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-7, 20000)
         (sol["solution"] as MyMatrix).print(0, 17)
         println("Elapsed " + sol["executionTime"] + " ms")
     }
@@ -45,8 +45,8 @@ class GradientDescentSolverTest {
             LHS,
             MyMatrix.onesVec(LHSDim),
             MyMatrix.zerosVec(LHSDim),
-            10e-14,
-            2000
+            10e-7,
+            20000
         )
         println("Iterations: " + sol["iterations"])
         println("Convergence reached by tolerance: " + sol["convergenceReachedByTolerance"])

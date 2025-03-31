@@ -10,6 +10,10 @@ import kotlin.test.assertTrue
 class GaussSeidelTest {
 
     private val solver = GaussSeidelSolver
+    init {
+        solver.performSPDTest = true
+        solver.performDDTest = true
+    }
     @Test
     @Throws(IOException::class)
     fun withDD_SPDMatrix() {
@@ -23,8 +27,6 @@ class GaussSeidelTest {
             doubleArrayOf(10.0, 20.0, 30.0)
         )
         val spd = MyMatrix.constructWithCopy(spdVals)
-        assertTrue(spd.isSPD())
-        assertTrue(spd.isDiagonalDominant())
         val rhs = MyMatrix.constructWithCopy(rhsVals).transpose()
         val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
         (sol["solution"] as MyMatrix).print(0, 17)

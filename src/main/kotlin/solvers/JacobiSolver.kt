@@ -19,6 +19,7 @@ object JacobiSolver: SPDSolver {
         val diag = leftHandSide.diag()
         val B = diag.minus(leftHandSide)
 
+        val errors = mutableListOf<Double>()
         var xOld = initialGuess.copy()
         var xNew = xOld.plus(1.0)
         var nit = 0
@@ -28,9 +29,11 @@ object JacobiSolver: SPDSolver {
             B.times(xOld)
             xNew = invDiag.times(B.times(xOld).plus(rightHandSide))
             nit++
+            errors.add(xNew.minus(xOld).normInf())
         }
         val end = System.currentTimeMillis()
         val elapsed = end - start
+        toRet["errors"] = errors
         toRet["solution"] = xNew
         toRet["iterations"] = nit
         toRet["convergenceReachedByTolerance"] = !(xNew.minus(xOld).normInf() > tolerance && nit == maximumIterations)

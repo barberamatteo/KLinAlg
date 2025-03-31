@@ -3,7 +3,10 @@ package it.matteobarbera.solvers
 import it.matteobarbera.model.MyMatrix
 
 object GaussSeidelSolver: SPDSolver {
-    val trilSolver: TriXSolver = TrilSolver
+    private val trilSolver: TriXSolver = TrilSolver
+    var performSPDTest: Boolean = true
+    var performDDTest: Boolean = true
+
 
     override fun solve(
         leftHandSide: MyMatrix,
@@ -15,10 +18,12 @@ object GaussSeidelSolver: SPDSolver {
 
         val start = System.currentTimeMillis()
         val toRet = mutableMapOf<String, Any>()
-        if (!leftHandSide.isSPD())
-            println("WARNING: leftHandSide is not SPD. Gauss-Seidel solver will not work well.")
-        if (!leftHandSide.isDiagonalDominant())
-            println("WARNING: leftHandSide is not diagonal dominant. Gauss-Seidel solver will not work well")
+        if (performSPDTest)
+            if (!leftHandSide.isSPD())
+                println("WARNING: leftHandSide is not SPD. Gauss-Seidel solver will not work well.")
+        if (performDDTest)
+            if (!leftHandSide.isDiagonalDominant())
+                println("WARNING: leftHandSide is not diagonal dominant. Gauss-Seidel solver will not work well")
         val L = leftHandSide.tril()
         val B = leftHandSide - L
         var xOld = initialGuess.copy()

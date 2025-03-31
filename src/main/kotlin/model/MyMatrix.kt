@@ -49,9 +49,10 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
         return MyMatrix(super.minus(matrix))
     }
 
-    override operator fun times(matrix: Matrix?): MyMatrix {
+    operator fun times(matrix: MyMatrix): MyMatrix{
         return MyMatrix(super.times(matrix))
     }
+
 
     override operator fun times(scalar: Double): MyMatrix{
         return MyMatrix(super.times(scalar))
@@ -222,7 +223,7 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
 
         var ret = 0.0
         for (i in 0..<this.columnDimension) {
-            ret += this.get(i) * other.get(i)
+            ret += this[i] * other[i]
         }
         return ret
     }
@@ -240,6 +241,17 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
         return getMatrix(0, 0, firstIndex, lastIndex)
     }
 
+    private fun isColumn(): Boolean{
+        return isVector && columnDimension == 1 && rowDimension != 1
+    }
+
+    private fun isRow(): Boolean {
+        return isVector && rowDimension == 1 && columnDimension != 1
+    }
+
+    private fun isScalar(): Boolean{
+        return isSquare && rowDimension == 1
+    }
     override fun hashCode(): Int {
         return javaClass.hashCode()
     }
