@@ -18,5 +18,5 @@ fun main() {
     val spd = MyMatrix.constructWithCopy(spdVals)
     val rhs = MyMatrix.constructWithCopy(rhsVals).transpose()
     val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
-    Chart.plot(sol["errors"] as MutableList<Double>)
+    Chart.plot(sol.errors)
 }

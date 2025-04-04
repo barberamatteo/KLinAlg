@@ -9,9 +9,8 @@ object JacobiSolver: SPDSolver {
         initialGuess: MyMatrix,
         tolerance: Double,
         maximumIterations: Int
-    ): MutableMap<String, Any> {
+    ): AlgorithmResult {
         val start = System.currentTimeMillis()
-        val toRet = mutableMapOf<String, Any>()
         if (!leftHandSide.isSPD())
             println("WARNING: leftHandSide is not SPD. Jacobi solver will not work well.")
         if (!leftHandSide.isDiagonalDominant())
@@ -33,11 +32,12 @@ object JacobiSolver: SPDSolver {
         }
         val end = System.currentTimeMillis()
         val elapsed = end - start
-        toRet["errors"] = errors
-        toRet["solution"] = xNew
-        toRet["iterations"] = nit
-        toRet["convergenceReachedByTolerance"] = !(xNew.minus(xOld).normInf() > tolerance && nit == maximumIterations)
-        toRet["executionTime"] = elapsed
-        return toRet
+        return AlgorithmResult(
+            solution = xNew,
+            errors = errors,
+            iterations = nit,
+            convergenceReached = !(xNew.minus(xOld).normInf() > tolerance && nit == maximumIterations),
+            executionTime = elapsed
+        )
     }
 }

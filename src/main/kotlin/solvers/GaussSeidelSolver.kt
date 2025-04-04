@@ -14,10 +14,9 @@ object GaussSeidelSolver: SPDSolver {
         initialGuess: MyMatrix,
         tolerance: Double,
         maximumIterations: Int
-    ): MutableMap<String, Any> {
+    ): AlgorithmResult {
 
         val start = System.currentTimeMillis()
-        val toRet = mutableMapOf<String, Any>()
         if (performSPDTest)
             if (!leftHandSide.isSPD())
                 println("WARNING: leftHandSide is not SPD. Gauss-Seidel solver will not work well.")
@@ -26,20 +25,26 @@ object GaussSeidelSolver: SPDSolver {
                 println("WARNING: leftHandSide is not diagonal dominant. Gauss-Seidel solver will not work well")
         val L = leftHandSide.tril()
         val B = leftHandSide - L
+        val errors = mutableListOf<Double>()
         var xOld = initialGuess.copy()
         var xNew = xOld.plus(1.0)
         var nit = 0
         while ((xNew - xOld).normInf() > tolerance && nit < maximumIterations) {
             xOld = xNew.copy()
-            xNew = trilSolver.solve(L, rightHandSide - B * xOld)["solution"] as MyMatrix
+            xNew = trilSolver.solve(L, rightHandSide - B * xOld).solution
             nit++
+            errors.add(xNew.minus(xOld).normInf())
+
         }
         val end = System.currentTimeMillis()
         val elapsed = end - start
-        toRet["solution"] = xNew
-        toRet["iterations"] = nit
-        toRet["convergenceReachedByTolerance"] = !(xNew.minus(xOld).normInf() > tolerance && nit == maximumIterations)
-        toRet["executionTime"] = elapsed
-        return toRet
+
+        return AlgorithmResult(
+            solution = xNew,
+            errors = errors,
+            iterations = nit,
+            convergenceReached = !(xNew.minus(xOld).normInf() > tolerance && nit == maximumIterations),
+            executionTime = elapsed
+        )
     }
 }

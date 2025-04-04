@@ -9,5 +9,5 @@ interface SPDSolver {
         initialGuess: MyMatrix,
         tolerance: Double,
         maximumIterations: Int
-    ): MutableMap<String, Any>
+    ): AlgorithmResult
 }

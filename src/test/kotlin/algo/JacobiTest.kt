@@ -2,6 +2,7 @@ package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
 import it.matteobarbera.model.MyMatrix
+import it.matteobarbera.solvers.AlgorithmResult
 import it.matteobarbera.solvers.JacobiSolver
 import java.io.IOException
 import kotlin.test.Test
@@ -28,8 +29,8 @@ class JacobiTest {
         assertTrue(spd.isDiagonalDominant())
         val rhs = MyMatrix.constructWithCopy(rhsVals).transpose()
         val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
-        (sol["solution"] as MyMatrix).print(0, 17)
-        println("Elapsed " + sol["executionTime"] + " ms")
+        sol.solution.print(0, 17)
+        println("Elapsed " + sol.executionTime + " ms")
     }
 
     @Test
@@ -39,18 +40,18 @@ class JacobiTest {
         val LHSDim = LHS.rowDimension
 
 
-        val sol: Map<String, Any> = solver.solve(
+        val sol: AlgorithmResult = solver.solve(
             LHS,
             MyMatrix.onesVec(LHSDim),
             MyMatrix.zerosVec(LHSDim),
             10e-14,
             1000
         )
-        println("Iterations: " + sol["iterations"])
-        println("Convergence reached by tolerance: " + sol["convergenceReachedByTolerance"])
-        println("Execution time: " + sol["executionTime"] + " ms")
-        val xFinal = sol["solution"] as MyMatrix?
+        println("Iterations: " + sol.iterations)
+        println("Convergence reached by tolerance: " + sol.convergenceReached)
+        println("Execution time: " + sol.executionTime + " ms")
+        val xFinal = sol.solution
         println("Solution (as a row vector):")
-        xFinal!!.transpose().print(0, 17)
+        xFinal.transpose().print(0, 17)
     }
 }

@@ -6,6 +6,6 @@ interface TriXSolver {
     fun solve(
         leftHandSide: MyMatrix,
         rightHandSide: MyMatrix
-    ): Map<String, Any>
+    ): AlgorithmResult
 
 }

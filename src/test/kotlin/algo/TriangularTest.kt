@@ -28,7 +28,7 @@ class TriangularTest {
         val sol = solver.solve(matrix, rhs)
 
         val expected = MyMatrix.constructWithCopy(expectedSolution)
-        val solution = sol["solution"] as MyMatrix
+        val solution = sol.solution
         solution.print(0, 1)
         assertEquals(solution.norm2(), expected.norm2(), 0.001)
     }

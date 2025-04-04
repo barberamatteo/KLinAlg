@@ -1,6 +1,7 @@
 package it.matteobarbera.solvers
 
 import it.matteobarbera.model.MyMatrix
+import model.NotSPDException
 
 object GradientDescentSolver: SPDSolver {
     override fun solve(
@@ -9,13 +10,13 @@ object GradientDescentSolver: SPDSolver {
         initialGuess: MyMatrix,
         tolerance: Double,
         maximumIterations: Int
-    ): MutableMap<String, Any> {
+    ): AlgorithmResult {
         val start = System.currentTimeMillis()
-        val toRet = mutableMapOf<String, Any>()
         if (!leftHandSide.isSPD()) {
             println("ERROR: left hand side is not a SPD matrix. Gradient Descent won't work. Returning.")
-            return mutableMapOf()
+            throw NotSPDException()
         }
+        val errors = mutableListOf<Double>()
         var nit = 0
         var err = 1.0
         var xOld = initialGuess.copy()
@@ -25,17 +26,21 @@ object GradientDescentSolver: SPDSolver {
             val step = (residual.transpose().dotVV(residual)) / (residual.transpose().dotVV(leftHandSide * residual))
             xNew = xOld + residual * step
             err = ( (rightHandSide - leftHandSide * xNew).norm2() / xNew.norm2())
+            errors.add(err)
             xOld = xNew.copy()
             nit++
         }
 
         val end = System.currentTimeMillis()
         val elapsed = end - start
-        toRet["solution"] = xNew
-        toRet["iterations"] = nit
-        toRet["convergenceReachedByTolerance"] = !(err > tolerance && nit == maximumIterations)
-        toRet["executionTime"] = elapsed
-        return toRet
+        return AlgorithmResult(
+            solution = xNew,
+            errors = errors,
+            iterations = nit,
+            convergenceReached = !(err > tolerance && nit == maximumIterations),
+            executionTime = elapsed
+        )
+
     }
 
 }

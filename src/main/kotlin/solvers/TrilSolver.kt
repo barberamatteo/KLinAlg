@@ -5,7 +5,7 @@ import it.matteobarbera.model.MyMatrix
 import model.NotTriangularException
 
 object TrilSolver: TriXSolver {
-    override fun solve(leftHandSide: MyMatrix, rightHandSide: MyMatrix): Map<String, Any> {
+    override fun solve(leftHandSide: MyMatrix, rightHandSide: MyMatrix): AlgorithmResult {
         if (!leftHandSide.isTril()) {
             throw NotTriangularException(false)
         }
@@ -18,9 +18,8 @@ object TrilSolver: TriXSolver {
             )
         }
 
-        return mapOf(
-            Pair("solution", guess)
+        return AlgorithmResult(
+            solution = guess
         )
-
     }
 }
