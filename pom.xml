@@ -115,6 +115,11 @@
             <artifactId>jfreechart</artifactId>
             <version>1.5.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.10.1</version>
+        </dependency>
     </dependencies>
 
 </project>

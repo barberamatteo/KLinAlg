@@ -94,4 +94,19 @@ class GenericTests {
 
         assertEquals(diagonalInverse, expected)
     }
+
+
+    @Test
+    fun arrayTest(){
+        val diagonalVals = arrayOf(
+            doubleArrayOf(0.5, 0.0, 0.0),
+            doubleArrayOf(0.0, 9.0, 0.0),
+            doubleArrayOf(0.0, 0.0, 1.0 / 8)
+        )
+
+
+        val cpy = diagonalVals.copyOf()
+        cpy[0][1] = 1.0
+        assert(diagonalVals.contentEquals(cpy))
+    }
 }

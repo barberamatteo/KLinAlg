@@ -1,8 +1,11 @@
 package it.matteobarbera.solvers
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import it.matteobarbera.model.MyMatrix
 
 object JacobiSolver: SPDSolver {
+    override var performSPDTest: Boolean = true
+    var performDDTest: Boolean = true
     override fun solve(
         leftHandSide: MyMatrix,
         rightHandSide: MyMatrix,
@@ -11,10 +14,12 @@ object JacobiSolver: SPDSolver {
         maximumIterations: Int
     ): AlgorithmResult {
         val start = System.currentTimeMillis()
-        if (!leftHandSide.isSPD())
-            println("WARNING: leftHandSide is not SPD. Jacobi solver will not work well.")
-        if (!leftHandSide.isDiagonalDominant())
-            println("WARNING: leftHandSide is not diagonal dominant. Jacobi solver will not work well")
+        if (performSPDTest)
+            if (!leftHandSide.isSPD())
+                println("WARNING: leftHandSide is not SPD. Jacobi solver will not work well.")
+        if (performDDTest)
+            if (!leftHandSide.isDiagonalDominant())
+                println("WARNING: leftHandSide is not diagonal dominant. Jacobi solver will not work well")
         val diag = leftHandSide.diag()
         val B = diag.minus(leftHandSide)
 
@@ -23,12 +28,13 @@ object JacobiSolver: SPDSolver {
         var xNew = xOld.plus(1.0)
         var nit = 0
         val invDiag = diag.invDiag()
-        while (xNew.minus(xOld).normInf() > tolerance && nit < maximumIterations) {
+        var err = 1.0
+        while (err > tolerance && nit < maximumIterations) {
             xOld = xNew.copy()
-            B.times(xOld)
             xNew = invDiag.times(B.times(xOld).plus(rightHandSide))
             nit++
-            errors.add(xNew.minus(xOld).normInf())
+            err = xNew.minus(xOld).normInf()
+            errors.add(err)
         }
         val end = System.currentTimeMillis()
         val elapsed = end - start

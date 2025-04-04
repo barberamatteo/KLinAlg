@@ -4,7 +4,7 @@ import it.matteobarbera.model.MyMatrix
 
 object GaussSeidelSolver: SPDSolver {
     private val trilSolver: TriXSolver = TrilSolver
-    var performSPDTest: Boolean = true
+    override var performSPDTest: Boolean = true
     var performDDTest: Boolean = true
 
 

@@ -255,4 +255,16 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
     override fun hashCode(): Int {
         return javaClass.hashCode()
     }
+
+    fun decomposeAsSparse(): MutableMap<Pair<Int, Int>, Double>{
+        val toRet = mutableMapOf<Pair<Int, Int>, Double>()
+        for (i in 0..<this.rowDimension) {
+            for (j in 0..<this.columnDimension) {
+                if (array[i][j] != 0.0){
+                    toRet[Pair(i, j)] = array[i][j]
+                }
+            }
+        }
+        return toRet
+    }
 }

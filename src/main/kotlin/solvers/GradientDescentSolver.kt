@@ -4,6 +4,8 @@ import it.matteobarbera.model.MyMatrix
 import model.NotSPDException
 
 object GradientDescentSolver: SPDSolver {
+    override var performSPDTest: Boolean = true
+
     override fun solve(
         leftHandSide: MyMatrix,
         rightHandSide: MyMatrix,
