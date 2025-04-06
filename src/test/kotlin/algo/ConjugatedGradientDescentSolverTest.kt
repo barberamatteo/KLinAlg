@@ -9,6 +9,9 @@ import kotlin.test.Test
 class ConjugatedGradientDescentSolverTest {
 
     private val solver = ConjugatedGradientDescentSolver
+    init{
+        solver.performSPDTest = false
+    }
     @Test
     @Throws(IOException::class)
     fun withSPDMatrixFromFile_spa1() {

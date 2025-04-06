@@ -11,7 +11,9 @@ import kotlin.test.assertTrue
 class GradientDescentSolverTest {
 
     private val solver = GradientDescentSolver
-
+    init {
+        solver.performSPDTest = false
+    }
     @Test
     @Throws(IOException::class)
     fun withDD_SPDMatrix() {

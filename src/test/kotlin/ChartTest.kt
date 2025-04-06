@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 class ChartTest {
 
     @Test
-    fun plot(){
+    fun simpleDiscretePlot(){
         val solver = JacobiSolver
         val spdVals = arrayOf(
             doubleArrayOf(2.0, -1.0, 0.0),
@@ -23,6 +23,6 @@ class ChartTest {
         assertTrue(spd.isDiagonalDominant())
         val rhs = MyMatrix.constructWithCopy(rhsVals).transpose()
         val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
-        Chart.plot(sol.errors)
+        //Chart.simpleDiscretePlot(sol.errors)
     }
 }

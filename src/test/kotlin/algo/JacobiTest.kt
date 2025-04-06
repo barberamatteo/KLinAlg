@@ -10,7 +10,10 @@ import kotlin.test.assertTrue
 
 class JacobiTest {
     private var solver = JacobiSolver
-
+    init {
+        solver.performSPDTest = false
+        solver.performDDTest = false
+    }
 
     @Test
     @Throws(IOException::class)

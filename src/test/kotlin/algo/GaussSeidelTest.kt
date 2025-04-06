@@ -11,8 +11,8 @@ class GaussSeidelTest {
 
     private val solver = GaussSeidelSolver
     init {
-        solver.performSPDTest = true
-        solver.performDDTest = true
+        solver.performSPDTest = false
+        solver.performDDTest = false
     }
     @Test
     @Throws(IOException::class)

@@ -14,10 +14,11 @@ object ConjugatedGradientDescentSolver: SPDSolver {
         maximumIterations: Int
     ): AlgorithmResult {
         val start = System.currentTimeMillis()
-        if (!leftHandSide.isSPD()) {
-            println("ERROR: left hand side is not a SPD matrix. Conjugated Gradient Descent won't work. Returning.")
-            throw NotSPDException()
-        }
+        if (performSPDTest)
+            if (!leftHandSide.isSPD()) {
+                println("ERROR: left hand side is not a SPD matrix. Conjugated Gradient Descent won't work. Returning.")
+                throw NotSPDException()
+            }
 
         val errors = mutableListOf<Double>()
         var nit = 0

@@ -14,10 +14,11 @@ object GradientDescentSolver: SPDSolver {
         maximumIterations: Int
     ): AlgorithmResult {
         val start = System.currentTimeMillis()
-        if (!leftHandSide.isSPD()) {
-            println("ERROR: left hand side is not a SPD matrix. Gradient Descent won't work. Returning.")
-            throw NotSPDException()
-        }
+        if (performSPDTest)
+            if (!leftHandSide.isSPD()) {
+                println("ERROR: left hand side is not a SPD matrix. Gradient Descent won't work. Returning.")
+                throw NotSPDException()
+            }
         val errors = mutableListOf<Double>()
         var nit = 0
         var err = 1.0

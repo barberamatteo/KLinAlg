@@ -10,15 +10,22 @@ import javax.swing.SwingUtilities
 
 
 object Chart {
-    fun plot(values: MutableList<Double>){
-        val series = XYSeries("Errors")
+    fun simpleDiscretePlot(
+        values: MutableList<Double>,
+        seriesName: String,
+        windowTitle: String,
+        plotTitle: String,
+        xAxisLabel: String,
+        yAxisLabel: String
+    ){
+        val series = XYSeries(seriesName)
         values.forEachIndexed(series::add)
         val dataset = XYSeriesCollection()
         dataset.addSeries(series)
         val chart = ChartFactory.createXYLineChart(
-            "Error over iterations",
-            "Iteration number",
-            "Error",
+            plotTitle,
+            xAxisLabel,
+            yAxisLabel,
             dataset,
             PlotOrientation.VERTICAL,
             true, true, false
@@ -26,7 +33,7 @@ object Chart {
 
         val chartPanel = ChartPanel(chart)
         SwingUtilities.invokeLater {
-            val frame = JFrame("Grafico con JFreeChart")
+            val frame = JFrame(windowTitle)
             frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             frame.add(chartPanel)
             frame.pack()
