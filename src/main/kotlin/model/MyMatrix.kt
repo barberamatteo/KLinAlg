@@ -1,13 +1,26 @@
 package it.matteobarbera.model
 
+import Jama.CholeskyDecomposition
+import Jama.LUDecomposition
 import Jama.Matrix
 import java.util.*
 
+/**
+ * A wrapper for NIST's JAMA Library for basic Linear Algebra Matrix class,
+ * enhanced with shorthands and utility methods, useful in matter of solving
+ * systems of linear equations.
+ * @param[i] Row dimension
+ * @param[j] Column dimension
+ */
 class MyMatrix(i: Int, j: Int): Matrix(i, j) {
+
+
     private var symmetric: Boolean? = null
     private var positiveDefinite: Boolean? = null
     private val isVector: Boolean = i == 1 || j == 1
     private val isSquare: Boolean = i == j
+
+
 
     constructor(matrix: Matrix) :
         this(matrix.rowDimension, matrix.columnDimension){
@@ -17,6 +30,35 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
                 matrix
             )
     }
+
+    constructor(array: DoubleArray):
+        this(1, array.size) {
+            for (i in array.indices)
+                set(0, i, array[i])
+    }
+
+    constructor(array: Array<DoubleArray>):
+            this(array.size, array[0].size) {
+                for (i in array.indices){
+                    for (j in array[0].indices){
+                        set(i, j, array[i][j])
+                    }
+                }
+            }
+
+
+
+    constructor(array: Array<MyMatrix>):
+        this(array.size, array[0].columnDimension){
+            for (i in array.indices){
+                setMatrix(
+                    i, i,
+                    0, array[0].columnDimension - 1,
+                    array[i]
+                )
+            }
+        }
+
 
     companion object{
         fun constructWithCopy(doubles: Array<DoubleArray>): MyMatrix {
@@ -34,6 +76,7 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
             }
             return toRet
         }
+
     }
 
 
@@ -138,7 +181,7 @@ class MyMatrix(i: Int, j: Int): Matrix(i, j) {
     }
 
     fun diag(): MyMatrix {
-        val toRet: MyMatrix = MyMatrix(this.rowDimension, this.columnDimension)
+        val toRet = MyMatrix(this.rowDimension, this.columnDimension)
         for (i in 0..<this.rowDimension) {
             toRet[i, i] = this[i, i]
         }

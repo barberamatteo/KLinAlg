@@ -1,9 +1,9 @@
 package it.matteobarbera.solvers
 
 import it.matteobarbera.model.MyMatrix
-import model.NotSPDException
+import model.exceptions.NotSPDException
 
-object GradientDescentSolver: SPDSolver {
+object GradientDescentSolver/*: SPDSolverOld {
     override var performSPDTest: Boolean = true
 
     override fun solve(
@@ -46,4 +46,4 @@ object GradientDescentSolver: SPDSolver {
 
     }
 
-}
+}*/

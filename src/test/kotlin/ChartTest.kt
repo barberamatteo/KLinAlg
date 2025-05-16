@@ -5,7 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class ChartTest {
-
+/*
     @Test
     fun simpleDiscretePlot(){
         val solver = JacobiSolver
@@ -25,4 +25,5 @@ class ChartTest {
         val sol = solver.solve(spd, rhs, MyMatrix.zerosVec(3), 10e-14, 20000)
         //Chart.simpleDiscretePlot(sol.errors)
     }
+*/
 }

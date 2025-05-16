@@ -9,7 +9,7 @@ import kotlin.test.Test
 
 class GaussSeidelTest {
 
-    private val solver = GaussSeidelSolver
+    /*private val solver = GaussSeidelSolver
     init {
         solver.performSPDTest = false
         solver.performDDTest = false
@@ -36,7 +36,7 @@ class GaussSeidelTest {
     @Test
     @Throws(IOException::class)
     fun withSPDMatrixFromFile_spa1() {
-        val LHS = parse("src/test/resources/spa1.mtx")
+        val LHS = parse("src/test/resources/dati/spa1.mtx")
         val LHSDim = LHS.rowDimension
 
 
@@ -53,5 +53,5 @@ class GaussSeidelTest {
         val xFinal = sol.solution
         println("Solution (as a row vector):")
         xFinal.transpose().print(0, 17)
-    }
+    }*/
 }

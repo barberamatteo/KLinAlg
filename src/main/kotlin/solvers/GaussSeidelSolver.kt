@@ -2,7 +2,7 @@ package it.matteobarbera.solvers
 
 import it.matteobarbera.model.MyMatrix
 
-object GaussSeidelSolver: SPDSolver {
+object GaussSeidelSolver/*: SPDSolverOld {
     private val trilSolver: TriXSolver = TrilSolver
     override var performSPDTest: Boolean = true
     var performDDTest: Boolean = true
@@ -47,4 +47,4 @@ object GaussSeidelSolver: SPDSolver {
             executionTime = elapsed
         )
     }
-}
+}*/

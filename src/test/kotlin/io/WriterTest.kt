@@ -9,7 +9,7 @@ import it.matteobarbera.solvers.JacobiSolver
 import kotlin.test.Test
 
 class WriterTest {
-    private val solver = JacobiSolver
+    /*private val solver = JacobiSolver
 
     @Test
     fun writeSolution(){
@@ -25,5 +25,5 @@ class WriterTest {
             1000
         )
         sol.writeAsMtxFile("src/test/resources/spa2_sol.mtx")
-    }
+    }*/
 }

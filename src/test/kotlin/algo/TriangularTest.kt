@@ -1,5 +1,6 @@
 package algo
 
+import it.matteobarbera.model.Matrix
 import it.matteobarbera.model.MyMatrix
 import it.matteobarbera.solvers.TrilSolver
 import kotlin.test.Test
@@ -19,17 +20,16 @@ class TriangularTest {
         val rhsVals = arrayOf(
             doubleArrayOf(1.0, 2.0, 9.0, 18.0)
         )
-        val matrix = MyMatrix.constructWithCopy(vals)
-        val rhs = MyMatrix.constructWithCopy(rhsVals)
+        val matrix = Matrix(vals)
+        val rhs = Matrix(rhsVals)
 
         val expectedSolution = arrayOf(
             doubleArrayOf(1.0, 0.0, 1.2, 2.3)
         )
         val sol = solver.solve(matrix, rhs)
 
-        val expected = MyMatrix.constructWithCopy(expectedSolution)
+        val expected = Matrix(expectedSolution)
         val solution = sol.solution
-        solution.print(0, 1)
-        assertEquals(solution.norm2(), expected.norm2(), 0.001)
+        assertEquals(solution norm 2.0, expected norm 2.0, 0.001)
     }
 }

@@ -1,7 +1,6 @@
 package it.matteobarbera.io
 
-import Jama.Matrix
-import it.matteobarbera.model.MyMatrix
+import it.matteobarbera.model.Matrix
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.IOException
@@ -10,19 +9,19 @@ import java.io.InputStreamReader
 object MtxFileParser {
 
     @Throws(IOException::class)
-    fun parse(path: String): MyMatrix {
-        val matrix: MyMatrix
+    fun parse(path: String): Matrix {
+        val matrix: Matrix
         try {
             BufferedReader(InputStreamReader(FileInputStream(path))).use { br ->
                 val firstLine = br.readLine()
                 val headers = firstLine.split(" +".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val rows = headers[0].toInt()
                 val cols = headers[1].toInt()
-                matrix = MyMatrix(rows, cols)
+                matrix = Matrix(rows, cols)
                 populate(matrix, br)
                 return matrix
             }
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             throw IOException("Failed to parse from $path: invalid file.")
         }
     }

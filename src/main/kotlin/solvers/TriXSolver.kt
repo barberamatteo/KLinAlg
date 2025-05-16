@@ -1,11 +1,11 @@
 package it.matteobarbera.solvers
 
-import it.matteobarbera.model.MyMatrix
+import it.matteobarbera.model.Matrix
 
 interface TriXSolver {
     fun solve(
-        leftHandSide: MyMatrix,
-        rightHandSide: MyMatrix
+        coefficientMatrix: Matrix,
+        rightHandSide: Matrix
     ): AlgorithmResult
 
 }

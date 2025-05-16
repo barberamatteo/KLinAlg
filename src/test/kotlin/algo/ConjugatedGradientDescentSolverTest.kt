@@ -8,15 +8,14 @@ import kotlin.test.Test
 
 class ConjugatedGradientDescentSolverTest {
 
-    private val solver = ConjugatedGradientDescentSolver
+    /*private val solver = ConjugatedGradientDescentSolver
     init{
         solver.performSPDTest = false
     }
     @Test
     @Throws(IOException::class)
     fun withSPDMatrixFromFile_spa1() {
-        val LHS = parse("src/test/resources/spa1.mtx")
-        val LHSDim = LHS.rowDimension
+        val LHS = parse("src/test/resources/dati/spa1.mtx")
 
 
 
@@ -34,5 +33,5 @@ class ConjugatedGradientDescentSolverTest {
         val xFinal = sol.solution
         println("Solution (as a row vector):")
         xFinal.transpose().print(0, 17)
-    }
+    }*/
 }

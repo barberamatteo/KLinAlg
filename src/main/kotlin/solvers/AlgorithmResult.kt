@@ -1,30 +1,39 @@
 package it.matteobarbera.solvers
 
+import it.matteobarbera.model.Matrix
 import it.matteobarbera.model.MyMatrix
 import java.io.FileWriter
+import kotlin.time.Duration
 
 data class AlgorithmResult(
-    val solution: MyMatrix,
+    val solution: Matrix,
     val errors: MutableList<Double>,
     val iterations: Int,
     val convergenceReached: Boolean,
-    val executionTime: Long
+    val executionTime: Duration
 ){
 
 
      //Used only for TriXSolver, where analytics are not considered
-    constructor(solution: MyMatrix) :
+    constructor(solution: Matrix) :
             this(
                 solution,
                 ArrayList(),
                 0,
                 false,
-                0L
+                Duration.ZERO
             )
 
+    override fun toString(): String {
+        return "solution=$solution,\n" +
+                " errors=$errors,\n" +
+                " iterations=$iterations,\n" +
+                " convergenceReached=$convergenceReached,\n" +
+                " executionTime=$executionTime"
+    }
 
 
-    fun writeAsMtxFile(path: String){
+    /*fun writeAsMtxFile(path: String){
         val writer = FileWriter(path)
         val strBuilder = StringBuilder()
         strBuilder.append(solution.rowDimension).append(" ")
@@ -44,7 +53,8 @@ data class AlgorithmResult(
 
         writer.write(strBuilder.toString())
         writer.close()
-    }
+    }*/
+
 
 
 }

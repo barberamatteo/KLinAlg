@@ -1,9 +1,9 @@
 package it.matteobarbera.solvers
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import it.matteobarbera.model.MyMatrix
 
-object JacobiSolver: SPDSolver {
+
+object JacobiSolver/*: SPDSolverOld{
     override var performSPDTest: Boolean = true
     var performDDTest: Boolean = true
     override fun solve(
@@ -46,4 +46,6 @@ object JacobiSolver: SPDSolver {
             executionTime = elapsed
         )
     }
-}
+
+
+}*/

@@ -1,21 +1,19 @@
 package it.matteobarbera.solvers
 
-import it.matteobarbera.main
-import it.matteobarbera.model.MyMatrix
-import model.NotTriangularException
+import it.matteobarbera.model.Matrix
+import model.exceptions.NotTriangularException
 
 object TrilSolver: TriXSolver {
-    override fun solve(leftHandSide: MyMatrix, rightHandSide: MyMatrix): AlgorithmResult {
-        if (!leftHandSide.isTril()) {
+    override fun solve(coefficientMatrix: Matrix, rightHandSide: Matrix): AlgorithmResult {
+        if (!coefficientMatrix.isTril()) {
             throw NotTriangularException(false)
         }
-        val guess: MyMatrix = MyMatrix.zerosVec(leftHandSide.rowDimension)
-        guess[0, 0] = rightHandSide[0] / leftHandSide[0, 0]
-        for (i in 1..<leftHandSide.rowDimension) {
-            guess.set(
-                i,
-                (rightHandSide[i] - leftHandSide.getRow(i).subVec(i - 1).dotVV(guess)) / leftHandSide[i, i]
-            )
+        val guess = Matrix.xFilledVector(coefficientMatrix.rows, 0.0, true)
+        guess[0, 0] = rightHandSide[0] / coefficientMatrix[0, 0]
+        for (i in 1 until coefficientMatrix.rows) {
+            guess[i] =
+                rightHandSide[i] -
+                        coefficientMatrix.getRow(i).subVector(0, i - 1).dot(guess) / coefficientMatrix[i, i]
         }
 
         return AlgorithmResult(
