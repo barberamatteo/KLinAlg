@@ -12,8 +12,8 @@ object TrilSolver: TriXSolver {
         guess[0, 0] = rightHandSide[0] / coefficientMatrix[0, 0]
         for (i in 1 until coefficientMatrix.rows) {
             guess[i] =
-                rightHandSide[i] -
-                        coefficientMatrix.getRow(i).subVector(0, i - 1).dot(guess) / coefficientMatrix[i, i]
+                (rightHandSide[i] -
+                        (coefficientMatrix.getRow(i)/*.prefixVector(i)*/ dot (guess/*.prefixVector(i)*/))) / coefficientMatrix[i, i]
         }
 
         return AlgorithmResult(

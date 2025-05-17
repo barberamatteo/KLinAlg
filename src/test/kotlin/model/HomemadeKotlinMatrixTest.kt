@@ -163,4 +163,14 @@ class HomemadeKotlinMatrixTest {
 
         assertEquals(m.tril(), expected)
     }
+
+    @Test
+    fun dot(){
+        val vals = doubleArrayOf(1.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+        val m1 = Matrix(vals = Array(1){ vals })
+        val m2 = Matrix(vals = Array(1){ vals }).transpose()
+        val valExpected = 14.0
+
+        assertEquals(m1 dot m2, valExpected)
+    }
 }

@@ -9,7 +9,9 @@ import it.matteobarbera.model.exceptions.NotSquareException
 import it.matteobarbera.model.exceptions.SingularMatrixException
 import kotlin.Double.Companion.POSITIVE_INFINITY
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.max
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -87,8 +89,15 @@ class Matrix(val rows: Int, val cols: Int){
             }
 
 
+    /**
+     * Static constants (such as the equality tolerance), static methods such as instantiation utilities and in-place
+     * basic matrix operations, to avoid unnecessary allocations of matrix with same shape as the operand(s).
+     * @author Matteo Barbera (UniMiB)
+     */
     companion object {
         const val EQUALITY_TOLERANCE = 10e-10
+
+        // Instantiation utilities
         fun xFilledVector(dimension: Int, value: Double, asColumnVector: Boolean): Matrix {
             return Matrix(DoubleArray(dimension) { value }, asColumnVector)
         }
@@ -96,6 +105,8 @@ class Matrix(val rows: Int, val cols: Int){
         fun toJamaMatrix(matrix: Matrix): Jama.Matrix {
             return Jama.Matrix(matrix.vals)
         }
+        // ------------------------
+
     }
 
 
@@ -187,23 +198,22 @@ class Matrix(val rows: Int, val cols: Int){
 
 
     /**
-     * @return a [Matrix] object row vector slicing the calling structure vector from [start] to [end]
-     * @throws RuntimeException if the calling structure is not a row vector
+     * @return a [Matrix] object vector slicing the calling structure vector from [start] to [stopIndex]
      */
-    fun subVector(start: Int, end: Int): Matrix {
-        try{
-            if (!isRowVector)
-                throw RuntimeException("Not a row vector")
-        } catch (e: RuntimeException){
-            return this
+    fun prefixVector(stopIndex: Int): Matrix {
+        val toRet = Matrix(
+            rows = if (isRowVector) 1 else stopIndex + 1,
+            cols = if (isRowVector) stopIndex + 1 else 1
+        )
+        if (isRowVector){
+            for (i in 0 until stopIndex)
+                toRet.vals[0][i] = vals[0][i]
         }
-         return Matrix(
-             vals = Array(1) {
-                 vals[0].sliceArray(start..end)
-             }
-         )
-
-
+        if (isColumnVector){
+            for (i in 0 until stopIndex)
+                toRet.vals[i][0] = vals[i][0]
+        }
+        return toRet
 
     }
 
@@ -341,6 +351,14 @@ class Matrix(val rows: Int, val cols: Int){
                 accumulator += vals[0][i]
             return sqrt(accumulator)
         }
+
+        if (isColumnVector){
+            var accumulator = 0.0
+            for (i in 0 until rows){
+                accumulator += vals[i][0].pow(2)
+            }
+            return sqrt(accumulator)
+        }
         return toJamaMatrix(this).norm2()
     }
 
@@ -462,11 +480,16 @@ class Matrix(val rows: Int, val cols: Int){
             return 0.0
         }
         var toRet = 0.0
-        for (i in 0 until rows){
-            toRet += vals[0][i] * otherVector[i]
+        for (i in 0 until cols){
+            toRet += vals[0][i] * otherVector.vals[i][0]
         }
         return toRet
     }
+
+
+
+
+
     /**
      * Performs an algebraic matrix-matrix product.
      * @param other Second factor
@@ -478,7 +501,7 @@ class Matrix(val rows: Int, val cols: Int){
     )
     operator fun times(other: Matrix): Matrix{
         if (matrixDimensionsMatchForDiagProduct(other))
-            return diagMultiplyByVec(other)
+            return diagMultiplyByVec(other, force = true)
         try{
             if (isDottable(other))
                 throw NotAMatrixException(other)
@@ -554,9 +577,10 @@ class Matrix(val rows: Int, val cols: Int){
      * @param vec The vector to be multiplied to
      * @throws NotDiagonalException if the calling matrix is not diagonal.
      */
-    fun diagMultiplyByVec(vec: Matrix): Matrix{
-        if (!isDiag())
-            throw NotDiagonalException()
+    fun diagMultiplyByVec(vec: Matrix, force: Boolean = false): Matrix{
+        if (!force)
+            if (!isDiag())
+                throw NotDiagonalException()
         val toRet = Matrix(rows, 1)
         for (i in 0 until rows){
             toRet.vals[i][0] = vals[i][i] * vec[i]
@@ -708,9 +732,9 @@ class Matrix(val rows: Int, val cols: Int){
         for (i in 0 until rows){
             var s = 0.0
             for (j in 0 until cols){
-                s += vals[i][j]
+                s += vals[i][j].absoluteValue
             }
-            if ((s - vals[i][i]) > vals[i][i])
+            if ((s - vals[i][i]) > vals[i][i].absoluteValue)
                 return false
         }
         return true

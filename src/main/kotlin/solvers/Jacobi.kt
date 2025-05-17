@@ -31,8 +31,8 @@ object Jacobi: SPDSolver {
                     numberOfIterations = k
                     break
                 }
-                val residual = rightHandSide - (coefficientMatrix * xOld)
-                val residualByDiagInv = aDiagInv * residual
+                val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
+                val residualByDiagInv = aDiagInv.diagMultiplyByVec(residual, force = true)
                 (xOld + residualByDiagInv).copyInto(xNew)
                 xNew.copyInto(xOld)
                 error = (residual norm 2.0) / (rightHandSide norm 2.0)
@@ -47,7 +47,7 @@ object Jacobi: SPDSolver {
             iterations = numberOfIterations,
             convergenceReached = numberOfIterations != maximumIterations,
             executionTime = executionTime
-            )
+        )
 
     }
 

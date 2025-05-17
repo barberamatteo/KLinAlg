@@ -40,5 +40,9 @@ interface SPDSolver{
         return coefficientMatrix * xVector
     }
 
+    fun getResidual(rightHandSide: Matrix, coefficientMatrix: Matrix, xOld: Matrix): Matrix{
+        return rightHandSide - (coefficientMatrix * xOld)
+    }
+
 
 }

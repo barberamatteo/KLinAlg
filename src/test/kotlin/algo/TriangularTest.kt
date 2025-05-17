@@ -2,7 +2,9 @@ package algo
 
 import it.matteobarbera.model.Matrix
 import it.matteobarbera.model.MyMatrix
+import it.matteobarbera.model.exceptions.NotDottableException
 import it.matteobarbera.solvers.TrilSolver
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -30,6 +32,7 @@ class TriangularTest {
 
         val expected = Matrix(expectedSolution)
         val solution = sol.solution
-        assertEquals(solution norm 2.0, expected norm 2.0, 0.001)
+                assertEquals(solution norm 2.0, expected norm 2.0, 0.001)
+
     }
 }
