@@ -1,7 +1,6 @@
 package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
-import it.matteobarbera.model.MyMatrix
 import it.matteobarbera.solvers.ConjugatedGradient
 import java.io.IOException
 import kotlin.test.Test

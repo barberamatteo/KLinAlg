@@ -1,12 +1,11 @@
 package it.matteobarbera.multithread
 
-import it.matteobarbera.model.MyMatrix
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.*
 
-object MultiThreadOperationExecutor {
+object MultiThreadOperationExecutor /*{
 
     fun mul(a: MyMatrix, b: MyMatrix, blockSize: Int = 128): MyMatrix {
         if (a.columnDimension != b.rowDimension)
@@ -30,7 +29,7 @@ object MultiThreadOperationExecutor {
     }
 
     suspend fun parallelMatrixMultiply(a: MyMatrix, b: MyMatrix) = coroutineScope {
-        val chunkSize = 100 // Adjust chunk size based on performance testing
+        val chunkSize = 100
         val jobs = mutableListOf<Job>()
         val matrixA = a.array
         val matrixB = b.array
@@ -50,4 +49,4 @@ object MultiThreadOperationExecutor {
         jobs.forEach { it.join() }
         return@coroutineScope MyMatrix.constructWithCopy(result)
     }
-}
+}*/

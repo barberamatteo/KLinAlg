@@ -9,6 +9,10 @@ object GaussSeidel: SPDSolver {
     override var performSPDTest = true
 
     val trilSolver = TrilSolver
+
+    init {
+        trilSolver.performIsTrilTest = false
+    }
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
         exactSolution: Matrix,

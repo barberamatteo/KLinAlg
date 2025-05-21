@@ -1,9 +1,3 @@
-import it.matteobarbera.charts.Chart
-import it.matteobarbera.model.MyMatrix
-import it.matteobarbera.solvers.JacobiSolver
-import kotlin.test.Test
-import kotlin.test.assertTrue
-
 class ChartTest {
 /*
     @Test

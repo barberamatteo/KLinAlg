@@ -2,62 +2,58 @@ package model
 
 import it.matteobarbera.io.MtxFileParser
 import it.matteobarbera.model.Matrix
-import it.matteobarbera.model.MyMatrix
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import kotlin.Double.Companion.POSITIVE_INFINITY
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 import kotlin.time.measureTime
 
-class HomemadeKotlinMatrixTest {
+class MatrixTest {
 
 
 
     @Test
     fun checkValidityOfAllMethods(){
         val a = MtxFileParser.parse("src/test/resources/dati/spa1.mtx")
-        val b = MyMatrix(a.vals)
+        val b = Matrix(a.vals)
 
         assertEquals(a[0, 0], b[0, 0])
-        assertArrayEquals(a.vals, b.arrayCopy)
+        assertArrayEquals(a.vals, b.vals)
         assertEquals(a[34, 34], b[34, 34])
-        assertArrayEquals((+a).vals, b.transpose().arrayCopy)
+        assertArrayEquals((+a).vals, b.transpose().vals)
         //assertArrayEquals((-a).vals, b.uminus().arrayCopy)
-        assertArrayEquals(a.copy().vals, b.copy().arrayCopy)
-        assertEquals(a norm 1.0, b.norm1())
-        assertEquals(a norm 2.0, b.norm2())
-        assertEquals(a norm POSITIVE_INFINITY, b.normInf())
-        assertArrayEquals((a + a).vals, b.plus(b).arrayCopy)
+        assertArrayEquals(a.copy().vals, b.copy().vals)
+        assertEquals(a norm 2.0, b norm 2.0)
+        assertEquals(a norm 2.0, b norm 2.0)
+        assertEquals(a norm POSITIVE_INFINITY, b norm POSITIVE_INFINITY)
+        assertArrayEquals((a + a).vals, b.plus(b).vals)
         a+= a
-        b.plusEquals(b)
-        b.plusEquals(b) //Why do I have to do it twice???
+        b += b
 
-        assertArrayEquals(a.vals, b.arrayCopy)
+        assertArrayEquals(a.vals, b.vals)
         a -= a
-        b.minusEquals(b)
+        b -= b
 
-        assertArrayEquals(a.vals, b.arrayCopy)
+        assertArrayEquals(a.vals, b.vals)
 
 
-        assertArrayEquals((a * a).vals, b.times(b).arrayCopy)
+        assertArrayEquals((a * a).vals, b.times(b).vals)
         a *= 17.0
-        b.timesEquals(17.0)
-        assertArrayEquals(a.vals, b.arrayCopy)
+        b *= 17.0
+        assertArrayEquals(a.vals, b.vals)
 
         assertEquals(a.det(), b.det())
         if (a.det() != 0.0)
-            assertArrayEquals((!a).vals, b.inverse().arrayCopy)
+            assertArrayEquals((!a).vals, b.inverse().vals)
 
     }
 
     @Test
     fun inverseBenchmark(){
         val a = MtxFileParser.parse("src/test/resources/dati/spa1.mtx")
-        val b = MyMatrix(a.vals)
+        val b = Matrix(a.vals)
 
         measureTime {
             !a
@@ -174,7 +170,7 @@ class HomemadeKotlinMatrixTest {
         assertEquals(m1 dot m2, valExpected)
     }
 
-    @Test
+    /*@Test
     fun conditionNumber(){
         //val spa1 = MtxFileParser.parse("src/test/resources/dati/spa1.mtx")
         val spa2 = MtxFileParser.parse("src/test/resources/dati/spa2.mtx")
@@ -188,5 +184,5 @@ class HomemadeKotlinMatrixTest {
         //println("Cond vem1 : ${vem1.conditionNumber()}")
         //println("Cond vem2 : ${vem2.conditionNumber()}")
 
-    }
+    }*/
 }

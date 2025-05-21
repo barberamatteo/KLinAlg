@@ -1,16 +1,11 @@
 package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
-import it.matteobarbera.model.MyMatrix
-import it.matteobarbera.solvers.AlgorithmResult
-import it.matteobarbera.solvers.GradientDescent
-import it.matteobarbera.solvers.GradientDescentSolver
-import java.io.IOException
+import it.matteobarbera.solvers.Gradient
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class GradientDescentSolverTest {
-    val solver = GradientDescent
+    val solver = Gradient
 
     @Test
     fun spa1_10en4(){

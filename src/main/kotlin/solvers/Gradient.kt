@@ -4,7 +4,7 @@ import it.matteobarbera.model.Matrix
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
-object GradientDescent: SPDSolver {
+object Gradient: SPDSolver {
     override var performSPDTest: Boolean = true
 
     override fun computeApproximateSolution(

@@ -1,7 +1,6 @@
 package it.matteobarbera.solvers
 
 import it.matteobarbera.model.Matrix
-import it.matteobarbera.model.MyMatrix
 import java.io.FileWriter
 import kotlin.time.Duration
 

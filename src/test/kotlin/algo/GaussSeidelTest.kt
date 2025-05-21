@@ -1,10 +1,8 @@
 package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
-import it.matteobarbera.model.MyMatrix
 import it.matteobarbera.solvers.AlgorithmResult
 import it.matteobarbera.solvers.GaussSeidel
-import it.matteobarbera.solvers.GaussSeidelSolver
 import java.io.IOException
 import kotlin.test.Test
 

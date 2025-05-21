@@ -29,8 +29,9 @@ object MtxFileParser {
     @Throws(IOException::class)
     private fun populate(matrix: Matrix, br: BufferedReader) {
         var line = br.readLine()
+        val regex = " +".toRegex()
         while (line != null) {
-            val entry = line.split(" +".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val entry = line.split(regex).dropLastWhile { it.isEmpty() }.toTypedArray()
             val i = entry[0].toInt() - 1
             val j = entry[1].toInt() - 1
             val v = entry[2].toDouble()

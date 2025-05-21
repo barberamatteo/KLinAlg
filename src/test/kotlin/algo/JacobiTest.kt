@@ -1,14 +1,8 @@
 package algo
 
-import it.matteobarbera.io.MtxFileParser
 import it.matteobarbera.io.MtxFileParser.parse
-import it.matteobarbera.model.MyMatrix
-import it.matteobarbera.solvers.AlgorithmResult
 import it.matteobarbera.solvers.Jacobi
-import it.matteobarbera.solvers.JacobiSolver
-import java.io.IOException
 import kotlin.test.Test
-import kotlin.test.assertTrue
 
 class JacobiTest {
     val solver = Jacobi

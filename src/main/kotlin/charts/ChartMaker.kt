@@ -9,7 +9,7 @@ import javax.swing.JFrame
 import javax.swing.SwingUtilities
 
 
-object Chart {
+object ChartMaker {
     fun simpleDiscretePlot(
         values: MutableList<Double>,
         seriesName: String,
