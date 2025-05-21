@@ -4,9 +4,8 @@ import it.matteobarbera.model.Matrix
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
-object Jacobi: SPDSolver {
+object GradientDescent: SPDSolver {
     override var performSPDTest: Boolean = true
-    var performDDTest: Boolean = true
 
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
@@ -15,14 +14,14 @@ object Jacobi: SPDSolver {
         tolerance: Double,
         maximumIterations: Int
     ): AlgorithmResult {
-        if (performDDTest)
-            if (!coefficientMatrix.isDiagonalDominant())
-                println("The coefficient matrix is not diagonal dominant. Jacobi method doesn't guarantee convergence")
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0
-        val aDiagInv = !(coefficientMatrix.createDiag())
-        val xOld = Matrix.xFilledVector(dimension = aDiagInv.rows, value = 0.0, asColumnVector = true)
+        val xOld = Matrix.xFilledVector(dimension = coefficientMatrix.rows, value = 0.0, asColumnVector = true)
+        val phiInput = xOld.copy()
+        var numerator = 0.0
+        var denominator = 0.0
+
         val xNew = xOld.copy()
         val executionTime: Duration
         measureTime {
@@ -31,16 +30,18 @@ object Jacobi: SPDSolver {
                     numberOfIterations = k
                     break
                 }
+
                 val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
-                val residualByDiagInv = aDiagInv.diagMultiplyByVec(residual, force = true)
-                xNew < xOld + residualByDiagInv
+                phiInput < coefficientMatrix * residual
+                numerator = residual.transpose() dot residual
+                denominator = residual.transpose() dot phiInput
+                xNew < (xOld + (residual * (numerator / denominator)))
                 xOld < xNew
                 error = (residual norm 2.0) / (rightHandSide norm 2.0)
                 errors.add(error)
                 numberOfIterations++
             }
         }.also { executionTime = it }
-
         return AlgorithmResult(
             solution = xNew,
             errors = errors,
@@ -50,5 +51,4 @@ object Jacobi: SPDSolver {
         )
 
     }
-
 }

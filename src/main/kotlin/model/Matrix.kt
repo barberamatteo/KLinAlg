@@ -228,6 +228,8 @@ class Matrix(val rows: Int, val cols: Int){
         vals[i][j] = value
     }
 
+
+
     /**
      * If this structure is a row vector, sets the (0, [i]) entry to [value].
      * If this structure is a column vector, sets the ([i], 0) entry to [value].
@@ -283,7 +285,7 @@ class Matrix(val rows: Int, val cols: Int){
      * @return The destination matrix
      * @throws DimensionsMismatchException if the dimensions of the two matrices mismatch
      */
-    fun copyInto(other: Matrix) {
+    infix fun copyInto(other: Matrix) {
         matrixDimensionsMatchForSum(other)
         for (i in 0 until rows){
             for (j in 0 until cols){
@@ -291,6 +293,13 @@ class Matrix(val rows: Int, val cols: Int){
             }
         }
     }
+
+    operator fun compareTo(other: Matrix): Int {
+        other copyInto this
+        return 0
+    }
+
+
 
     /**
      * @return A transposed copy of this matrix
@@ -725,7 +734,8 @@ class Matrix(val rows: Int, val cols: Int){
 
     /**
      * Checks whether this matrix is diagonal dominant (e.g. for every row, must hold that
-     * the (i,i) entry is greater than the sum of the entire row (leaving out the (i,i) entry),
+     * the absolute value of the (i,i) entry is greater than the absolute value of the sum of the entire
+     * row (leaving out the (i,i) entry)).
      * @return True if this matrix is diagonal dominant, false otherwise.
      */
     fun isDiagonalDominant(): Boolean{
@@ -762,6 +772,10 @@ class Matrix(val rows: Int, val cols: Int){
     }
 
 
+    /**
+     * Checks whether this matrix is a lower triangular
+     * @return true if this is a lower triangular matrix, false otherwise
+     */
     fun isTril(): Boolean{
         if (!isSquare)
             return false
@@ -772,6 +786,11 @@ class Matrix(val rows: Int, val cols: Int){
             }
         }
         return true
+    }
+
+    fun conditionNumber(): Double{
+        print( toJamaMatrix(this).eig())
+        return 0.0
     }
     /**
      * [toString] override that prints this matrix smartly.

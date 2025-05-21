@@ -173,4 +173,20 @@ class HomemadeKotlinMatrixTest {
 
         assertEquals(m1 dot m2, valExpected)
     }
+
+    @Test
+    fun conditionNumber(){
+        //val spa1 = MtxFileParser.parse("src/test/resources/dati/spa1.mtx")
+        val spa2 = MtxFileParser.parse("src/test/resources/dati/spa2.mtx")
+        //val vem1 = MtxFileParser.parse("src/test/resources/dati/vem1.mtx")
+        //val vem2 = MtxFileParser.parse("src/test/resources/dati/vem2.mtx")
+
+        val a = Matrix.toJamaMatrix(spa2)
+        a.eig()
+
+        //println("Cond spa1 : ${spa1.conditionNumber()}")
+        //println("Cond vem1 : ${vem1.conditionNumber()}")
+        //println("Cond vem2 : ${vem2.conditionNumber()}")
+
+    }
 }

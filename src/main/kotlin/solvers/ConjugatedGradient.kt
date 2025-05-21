@@ -4,9 +4,8 @@ import it.matteobarbera.model.Matrix
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
-object Jacobi: SPDSolver {
-    override var performSPDTest: Boolean = true
-    var performDDTest: Boolean = true
+object ConjugatedGradient: SPDSolver {
+    override var performSPDTest = true
 
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
@@ -15,15 +14,19 @@ object Jacobi: SPDSolver {
         tolerance: Double,
         maximumIterations: Int
     ): AlgorithmResult {
-        if (performDDTest)
-            if (!coefficientMatrix.isDiagonalDominant())
-                println("The coefficient matrix is not diagonal dominant. Jacobi method doesn't guarantee convergence")
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0
-        val aDiagInv = !(coefficientMatrix.createDiag())
-        val xOld = Matrix.xFilledVector(dimension = aDiagInv.rows, value = 0.0, asColumnVector = true)
+        val xOld = Matrix.xFilledVector(dimension = coefficientMatrix.rows, value = 0.0, asColumnVector = true)
+        val residualOld = getResidual(rightHandSide, coefficientMatrix, xOld)
+        val direction = residualOld.copy()
+        val residualNew = residualOld.copy()
+        var beta = 0.0
+        var numerator = 0.0
+        var denominator = 1.0
+        var step = 0.0
         val xNew = xOld.copy()
+        val y = xOld.copy()
         val executionTime: Duration
         measureTime {
             for (k in 0 until maximumIterations) {
@@ -31,16 +34,21 @@ object Jacobi: SPDSolver {
                     numberOfIterations = k
                     break
                 }
-                val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
-                val residualByDiagInv = aDiagInv.diagMultiplyByVec(residual, force = true)
-                xNew < xOld + residualByDiagInv
+                residualOld < getResidual(rightHandSide, coefficientMatrix, xOld)
+                y < coefficientMatrix * direction
+                numerator = direction.transpose() dot residualOld
+                denominator = direction.transpose() dot y
+                step = numerator / denominator
+                xNew < xOld + direction * step
                 xOld < xNew
-                error = (residual norm 2.0) / (rightHandSide norm 2.0)
+                residualNew < residualOld - (y * step)
+                beta = (y.transpose() dot residualNew) / (y.transpose() dot direction)
+                direction < residualNew - direction * beta
+                error = (residualOld norm 2.0) / (rightHandSide norm 2.0)
                 errors.add(error)
                 numberOfIterations++
             }
         }.also { executionTime = it }
-
         return AlgorithmResult(
             solution = xNew,
             errors = errors,
@@ -48,7 +56,5 @@ object Jacobi: SPDSolver {
             convergenceReached = numberOfIterations != maximumIterations,
             executionTime = executionTime
         )
-
     }
-
 }

@@ -2,36 +2,121 @@ package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
 import it.matteobarbera.model.MyMatrix
-import it.matteobarbera.solvers.ConjugatedGradientDescentSolver
+import it.matteobarbera.solvers.ConjugatedGradient
 import java.io.IOException
 import kotlin.test.Test
 
 class ConjugatedGradientDescentSolverTest {
+    val solver = ConjugatedGradient
 
-    /*private val solver = ConjugatedGradientDescentSolver
-    init{
-        solver.performSPDTest = false
+    @Test
+    fun spa1_10en4(){
+        val m = parse("src/test/resources/dati/spa1.mtx")
+        val sol = solver.solve(m, 10e-4, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun spa2_10en4(){
+        val m = parse("src/test/resources/dati/spa2.mtx")
+        val sol = solver.solve(m, 10e-4, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun vem1_10en4(){
+        val m = parse("src/test/resources/dati/vem1.mtx")
+        val sol = solver.solve(m, 10e-4, 100)
+        println(sol)
+    }
+
+    @Test
+    fun vem2_10en4(){
+        val m = parse("src/test/resources/dati/vem2.mtx")
+        val sol = solver.solve(m, 10e-4, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun spa1_10en6(){
+        val m = parse("src/test/resources/dati/spa1.mtx")
+        val sol = solver.solve(m, 10e-6, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun spa2_10en6(){
+        val m = parse("src/test/resources/dati/spa2.mtx")
+        val sol = solver.solve(m, 10e-6, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun vem1_10en6(){
+        val m = parse("src/test/resources/dati/vem1.mtx")
+        val sol = solver.solve(m, 10e-6, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun vem2_10en6(){
+        val m = parse("src/test/resources/dati/vem2.mtx")
+        val sol = solver.solve(m, 10e-6, 20000)
+        println(sol)
     }
     @Test
-    @Throws(IOException::class)
-    fun withSPDMatrixFromFile_spa1() {
-        val LHS = parse("src/test/resources/dati/spa1.mtx")
+    fun spa1_10en8(){
+        val m = parse("src/test/resources/dati/spa1.mtx")
+        val sol = solver.solve(m, 10e-8, 20000)
+        println(sol)
+    }
 
+    @Test
+    fun spa2_10en8(){
+        val m = parse("src/test/resources/dati/spa2.mtx")
+        val sol = solver.solve(m, 10e-8, 20000)
+        println(sol)
+    }
 
+    @Test
+    fun vem1_10en8(){
+        val m = parse("src/test/resources/dati/vem1.mtx")
+        val sol = solver.solve(m, 10e-8, 20000)
+        println(sol)
+    }
 
+    @Test
+    fun vem2_10en8(){
+        val m = parse("src/test/resources/dati/vem2.mtx")
+        val sol = solver.solve(m, 10e-8, 20000)
+        println(sol)
+    }
 
-        val sol = solver.solve(
-            LHS,
-            MyMatrix.onesVec(LHSDim),
-            MyMatrix.zerosVec(LHSDim),
-            10e-7,
-            20000
-        )
-        println("Iterations: " + sol.iterations)
-        println("Convergence reached by tolerance: " + sol.convergenceReached)
-        println("Execution time: " + sol.executionTime + " ms")
-        val xFinal = sol.solution
-        println("Solution (as a row vector):")
-        xFinal.transpose().print(0, 17)
-    }*/
+    @Test
+    fun spa1_10en10(){
+        val m = parse("src/test/resources/dati/spa1.mtx")
+        val sol = solver.solve(m, 10e-10, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun spa2_10en10(){
+        val m = parse("src/test/resources/dati/spa2.mtx")
+        val sol = solver.solve(m, 10e-10, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun vem1_10en10(){
+        val m = parse("src/test/resources/dati/vem1.mtx")
+        val sol = solver.solve(m, 10e-10, 20000)
+        println(sol)
+    }
+
+    @Test
+    fun vem2_10en10(){
+        val m = parse("src/test/resources/dati/vem2.mtx")
+        val sol = solver.solve(m, 10e-10, 20000)
+        println(sol)
+    }
 }

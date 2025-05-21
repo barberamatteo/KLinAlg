@@ -36,7 +36,7 @@ object GaussSeidel: SPDSolver {
                 }
                 val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
                 val trilSystem = trilSolver.solve(lowerTriangular, residual)
-                (xOld + trilSystem.solution).copyInto(xNew)
+                xNew < xOld + trilSystem.solution
                 xNew.copyInto(xOld)
                 error = (residual norm 2.0) / (rightHandSide norm 2.0)
                 errors.add(error)
