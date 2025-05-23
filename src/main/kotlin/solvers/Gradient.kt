@@ -33,8 +33,8 @@ object Gradient: SPDSolver {
 
                 val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
                 phiInput < coefficientMatrix * residual
-                numerator = residual.transpose() dot residual
-                denominator = residual.transpose() dot phiInput
+                numerator = +residual dot residual
+                denominator = +residual dot phiInput
                 xNew < (xOld + (residual * (numerator / denominator)))
                 xOld < xNew
                 error = (residual norm 2.0) / (rightHandSide norm 2.0)

@@ -36,13 +36,13 @@ object ConjugatedGradient: SPDSolver {
                 }
                 residualOld < getResidual(rightHandSide, coefficientMatrix, xOld)
                 y < coefficientMatrix * direction
-                numerator = direction.transpose() dot residualOld
-                denominator = direction.transpose() dot y
+                numerator = +direction dot residualOld
+                denominator = +direction dot y
                 step = numerator / denominator
                 xNew < xOld + direction * step
                 xOld < xNew
                 residualNew < residualOld - (y * step)
-                beta = (y.transpose() dot residualNew) / (y.transpose() dot direction)
+                beta = (+y dot residualNew) / (+y dot direction)
                 direction < residualNew - direction * beta
                 error = (residualOld norm 2.0) / (rightHandSide norm 2.0)
                 errors.add(error)

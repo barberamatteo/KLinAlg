@@ -2,7 +2,6 @@ package algo
 
 import it.matteobarbera.io.MtxFileParser.parse
 import it.matteobarbera.solvers.ConjugatedGradient
-import java.io.IOException
 import kotlin.test.Test
 
 class ConjugatedGradientDescentSolverTest {
@@ -25,7 +24,7 @@ class ConjugatedGradientDescentSolverTest {
     @Test
     fun vem1_10en4(){
         val m = parse("src/test/resources/dati/vem1.mtx")
-        val sol = solver.solve(m, 10e-4, 100)
+        val sol = solver.solve(m, 10e-4, 20000)
         println(sol)
     }
 
