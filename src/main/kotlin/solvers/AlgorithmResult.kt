@@ -9,8 +9,13 @@ data class AlgorithmResult(
     val errors: MutableList<Double>,
     val iterations: Int,
     val convergenceReached: Boolean,
-    val executionTime: Duration
+    val executionTime: Duration,
+    val cutFirstError: Boolean = true
 ){
+    init{
+        if (errors.isNotEmpty() && cutFirstError)
+            errors.removeFirst()
+    }
 
 
      //Used only for TriXSolver, where analytics are not considered

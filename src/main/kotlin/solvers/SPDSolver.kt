@@ -14,9 +14,15 @@ interface SPDSolver{
         maximumIterations: Int
     ): AlgorithmResult
 
-    fun solve(coefficientMatrix: Matrix, tolerance: Double, maximumIterations: Int): AlgorithmResult{
-        val exactSolution = createExactSolution(size = coefficientMatrix.rows)
-        val rightHandSide = createRightHandSide(coefficientMatrix = coefficientMatrix, xVector = exactSolution)
+    fun solve(
+        coefficientMatrix: Matrix,
+        tolerance: Double,
+        maximumIterations: Int,
+        exactSolution: Matrix = createExactSolution(size = coefficientMatrix.rows),
+        rightHandSide: Matrix = createRightHandSide(
+            coefficientMatrix = coefficientMatrix,
+            xVector = exactSolution
+        )): AlgorithmResult{
         return computeApproximateSolution(
             coefficientMatrix,
             exactSolution,
