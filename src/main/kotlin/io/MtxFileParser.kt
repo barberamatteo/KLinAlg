@@ -13,7 +13,9 @@ object MtxFileParser {
         val matrix: Matrix
         try {
             BufferedReader(InputStreamReader(FileInputStream(path))).use { br ->
-                val firstLine = br.readLine()
+                var firstLine = br.readLine()
+                if (firstLine[0] == '%')
+                    firstLine = br.readLine()
                 val headers = firstLine.split(" +".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val rows = headers[0].toInt()
                 val cols = headers[1].toInt()
