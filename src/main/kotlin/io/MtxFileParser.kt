@@ -14,7 +14,7 @@ object MtxFileParser {
         try {
             BufferedReader(InputStreamReader(FileInputStream(path))).use { br ->
                 var firstLine = br.readLine()
-                if (firstLine[0] == '%')
+                while (firstLine[0] == '%')
                     firstLine = br.readLine()
                 val headers = firstLine.split(" +".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val rows = headers[0].toInt()

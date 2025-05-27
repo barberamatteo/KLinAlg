@@ -9,7 +9,6 @@ object Gradient: SPDSolver {
 
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
-        exactSolution: Matrix,
         rightHandSide: Matrix,
         tolerance: Double,
         maximumIterations: Int

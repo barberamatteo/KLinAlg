@@ -8,7 +8,6 @@ interface SPDSolver{
 
     fun computeApproximateSolution(
         coefficientMatrix: Matrix,
-        exactSolution: Matrix,
         rightHandSide: Matrix,
         tolerance: Double,
         maximumIterations: Int
@@ -18,14 +17,10 @@ interface SPDSolver{
         coefficientMatrix: Matrix,
         tolerance: Double,
         maximumIterations: Int,
-        exactSolution: Matrix = createExactSolution(size = coefficientMatrix.rows),
-        rightHandSide: Matrix = createRightHandSide(
-            coefficientMatrix = coefficientMatrix,
-            xVector = exactSolution
-        )): AlgorithmResult{
+        rightHandSide: Matrix
+    ): AlgorithmResult{
         return computeApproximateSolution(
             coefficientMatrix,
-            exactSolution,
             rightHandSide,
             tolerance,
             maximumIterations
@@ -33,18 +28,6 @@ interface SPDSolver{
     }
 
 
-
-    private fun createExactSolution(size: Int): Matrix{
-        return Matrix.xFilledVector(
-            dimension = size,
-            value = 1.0,
-            asColumnVector = true
-        )
-    }
-
-    private fun createRightHandSide(coefficientMatrix: Matrix, xVector: Matrix): Matrix{
-        return coefficientMatrix * xVector
-    }
 
     fun getResidual(rightHandSide: Matrix, coefficientMatrix: Matrix, xOld: Matrix): Matrix{
         return rightHandSide - (coefficientMatrix * xOld)

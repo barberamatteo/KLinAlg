@@ -1,23 +1,24 @@
 package it.matteobarbera.solvers
 
 import it.matteobarbera.model.Matrix
+import org.slf4j.LoggerFactory
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
 object Jacobi: SPDSolver {
+    val logger = LoggerFactory.getLogger("Jacobi")
     override var performSPDTest: Boolean = true
     var performDDTest: Boolean = true
 
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
-        exactSolution: Matrix,
         rightHandSide: Matrix,
         tolerance: Double,
         maximumIterations: Int
     ): AlgorithmResult {
         if (performDDTest)
             if (!coefficientMatrix.isDiagonalDominant())
-                println("The coefficient matrix is not diagonal dominant. Jacobi method doesn't guarantee convergence")
+                logger.warn("The coefficient matrix is not diagonal dominant. Jacobi method doesn't guarantee convergence")
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0

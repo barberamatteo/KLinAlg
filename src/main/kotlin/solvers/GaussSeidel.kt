@@ -2,12 +2,13 @@ package it.matteobarbera.solvers
 
 import it.matteobarbera.model.Matrix
 import it.matteobarbera.solvers.Jacobi.performDDTest
+import org.slf4j.LoggerFactory
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
 object GaussSeidel: SPDSolver {
+    val logger = LoggerFactory.getLogger("GaussSeidel")
     override var performSPDTest = true
-
     val trilSolver = TrilSolver
 
     init {
@@ -15,14 +16,13 @@ object GaussSeidel: SPDSolver {
     }
     override fun computeApproximateSolution(
         coefficientMatrix: Matrix,
-        exactSolution: Matrix,
         rightHandSide: Matrix,
         tolerance: Double,
         maximumIterations: Int
     ): AlgorithmResult {
         if (performDDTest)
             if (!coefficientMatrix.isDiagonalDominant())
-                println("The coefficient matrix is not diagonal dominant. Jacobi method doesn't guarantee convergence")
+                logger.warn("The coefficient matrix is not diagonal dominant. Gauss-Seidel method doesn't guarantee convergence")
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0

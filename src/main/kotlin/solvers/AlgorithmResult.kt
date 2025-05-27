@@ -1,7 +1,6 @@
 package it.matteobarbera.solvers
 
 import it.matteobarbera.model.Matrix
-import java.io.FileWriter
 import kotlin.time.Duration
 
 data class AlgorithmResult(
@@ -11,7 +10,10 @@ data class AlgorithmResult(
     val convergenceReached: Boolean,
     val executionTime: Duration,
     val cutFirstError: Boolean = true
+
 ){
+    var includeSolutionInToString: Boolean = false
+    var includeErrorsInToString: Boolean = false
     init{
         if (errors.isNotEmpty() && cutFirstError)
             errors.removeFirst()
@@ -29,35 +31,23 @@ data class AlgorithmResult(
             )
 
     override fun toString(): String {
-        return "solution=$solution,\n" +
-                " errors=$errors,\n" +
+        val toRet: StringBuilder = StringBuilder()
+        if (includeSolutionInToString)
+            toRet.append(" solution=$solution,\n")
+        if (includeErrorsInToString)
+            toRet.append(" errors=$errors,\n")
+        toRet.append(
                 " iterations=$iterations,\n" +
                 " convergenceReached=$convergenceReached,\n" +
                 " executionTime=$executionTime"
+        )
+        return toRet.toString()
     }
 
 
-    /*fun writeAsMtxFile(path: String){
-        val writer = FileWriter(path)
-        val strBuilder = StringBuilder()
-        strBuilder.append(solution.rowDimension).append(" ")
-        strBuilder.append(solution.columnDimension).append(" ")
-        val sparseDecomposition = solution.decomposeAsSparse()
-        strBuilder.append(sparseDecomposition.size).append("\n")
-
-        for (row in sparseDecomposition) {
-            strBuilder.appendLine(
-                row.key.first.plus(1).toString()
-                        + " " +
-                        row.key.second.plus(1).toString()
-                        + " " +
-                        row.value.toString()
-            )
-        }
-
-        writer.write(strBuilder.toString())
-        writer.close()
-    }*/
+    fun relativeError(exactSolution: Matrix): Double {
+        return ((solution - exactSolution) norm 2.0) / (exactSolution norm 2.0)
+    }
 
 
 
