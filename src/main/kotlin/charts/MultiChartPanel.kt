@@ -1,6 +1,8 @@
 package charts
 
 import org.jfree.chart.ChartPanel
+import org.jfree.chart.axis.LogAxis
+import org.jfree.chart.axis.NumberTickUnit
 import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.event.ComponentAdapter

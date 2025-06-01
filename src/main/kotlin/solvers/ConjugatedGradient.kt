@@ -16,14 +16,22 @@ object ConjugatedGradient: SPDSolver {
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0
-        val xOld = Matrix.xFilledVector(dimension = coefficientMatrix.rows, value = 0.0, asColumnVector = true)
-        val residualOld = getResidual(rightHandSide, coefficientMatrix, xOld)
+        val xOld = Matrix.xFilledVector(
+            dimension = coefficientMatrix.rows,
+            value = 0.0,
+            asColumnVector = true
+        )
+        val residualOld = getResidual(
+            rightHandSide,
+            coefficientMatrix,
+            xOld
+        )
         val direction = residualOld.copy()
         val residualNew = residualOld.copy()
-        var beta = 0.0
-        var numerator = 0.0
-        var denominator = 1.0
-        var step = 0.0
+        var beta: Double
+        var numerator: Double
+        var denominator: Double
+        var alpha: Double
         val xNew = xOld.copy()
         val y = xOld.copy()
         val executionTime: Duration
@@ -33,14 +41,18 @@ object ConjugatedGradient: SPDSolver {
                     numberOfIterations = k
                     break
                 }
-                residualOld < getResidual(rightHandSide, coefficientMatrix, xOld)
+                residualOld < getResidual(
+                    rightHandSide,
+                    coefficientMatrix,
+                    xOld
+                )
                 y < coefficientMatrix * direction
                 numerator = +direction dot residualOld
                 denominator = +direction dot y
-                step = numerator / denominator
-                xNew < xOld + direction * step
+                alpha = numerator / denominator
+                xNew < xOld + direction * alpha
                 xOld < xNew
-                residualNew < residualOld - (y * step)
+                residualNew < residualOld - (y * alpha)
                 beta = (+y dot residualNew) / (+y dot direction)
                 direction < residualNew - direction * beta
                 error = (residualOld norm 2.0) / (rightHandSide norm 2.0)

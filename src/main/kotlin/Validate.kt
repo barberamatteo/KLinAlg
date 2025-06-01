@@ -1,5 +1,6 @@
 import charts.MultiChartPanel
 import it.matteobarbera.charts.BarsChartBuilder
+import it.matteobarbera.charts.BarsChartOptions
 import it.matteobarbera.io.MtxFileParser
 import it.matteobarbera.model.Matrix
 import it.matteobarbera.solvers.AlgorithmResult
@@ -147,18 +148,30 @@ fun main(args: Array<String>) {
 
     // Plot generation
 
-    /* Creates a table, in which each entry maps a matrix to a set of four charts
-     * showing iterations, execution time, relative errors and errors over
-     * iterations on the 10^-10 tolerance.
+    /* Creates a table, in which each entry maps a matrix to a set of three charts
+     * showing iterations, execution time, relative errors.
      */
 
     val chartTable = createTable<ChartPanel>(simpleFileNames).toMutableMap()
 
     // Creates all the charts from the data obtained by the methods, then adds them to the list
+
     for (simpleFileName in simpleFileNames) {
         val iterationsBarsChart = BarsChartBuilder()
+            .plotTitle("Iterations required to reach convergence (for each tolerance) - $simpleFileName")
+            .xAxisLabel("Method")
+            .yAxisLabel("Iterations")
+            .setLogAxis(true)
         val executionTimesBarChart = BarsChartBuilder()
+            .plotTitle("Execution time in milliseconds (for each tolerance) - $simpleFileName")
+            .xAxisLabel("Method")
+            .yAxisLabel("Time (ms)")
+            .setLogAxis(true)
         val relativeErrorsBarChart = BarsChartBuilder()
+            .plotTitle("Relative errors in [0, 1] (for each tolerance) - $simpleFileName")
+            .xAxisLabel("Method")
+            .yAxisLabel("Relative Error")
+            .setLogAxis(true)
 
         solvers.map {
             iterationsBarsChart.addCategory(it.javaClass.simpleName)

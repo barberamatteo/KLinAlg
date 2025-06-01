@@ -788,10 +788,6 @@ class Matrix(val rows: Int, val cols: Int){
         return true
     }
 
-    fun conditionNumber(): Double{
-        print( toJamaMatrix(this).eig())
-        return 0.0
-    }
     /**
      * [toString] override that prints this matrix smartly.
      * @return A string representation of this matrix (or vector).

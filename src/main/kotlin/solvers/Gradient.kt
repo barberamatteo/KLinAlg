@@ -16,10 +16,14 @@ object Gradient: SPDSolver {
         val errors = mutableListOf<Double>()
         var numberOfIterations = 0
         var error = 1.0
-        val xOld = Matrix.xFilledVector(dimension = coefficientMatrix.rows, value = 0.0, asColumnVector = true)
+        val xOld = Matrix.xFilledVector(
+            dimension = coefficientMatrix.rows,
+            value = 0.0,
+            asColumnVector = true
+        )
         val phiInput = xOld.copy()
-        var numerator = 0.0
-        var denominator = 0.0
+        var numerator: Double
+        var denominator: Double
 
         val xNew = xOld.copy()
         val executionTime: Duration
@@ -30,7 +34,11 @@ object Gradient: SPDSolver {
                     break
                 }
 
-                val residual = getResidual(rightHandSide, coefficientMatrix, xOld)
+                val residual = getResidual(
+                    rightHandSide,
+                    coefficientMatrix,
+                    xOld
+                )
                 phiInput < coefficientMatrix * residual
                 numerator = +residual dot residual
                 denominator = +residual dot phiInput

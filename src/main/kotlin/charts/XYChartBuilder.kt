@@ -3,6 +3,7 @@ package it.matteobarbera.charts
 import charts.ChartBuilder
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
+import org.jfree.chart.axis.LogAxis
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.renderer.AbstractRenderer
 import org.jfree.data.xy.XYSeries
@@ -27,7 +28,7 @@ class XYChartBuilder(
 
     private var panelWidth: Int = Toolkit.getDefaultToolkit().screenSize.width / 2
     private var panelHeight: Int = Toolkit.getDefaultToolkit().screenSize.height / 2
-
+    private var mustSetLogAxis = false
 
 
 
@@ -108,6 +109,19 @@ class XYChartBuilder(
 
 
         chartPanel = ChartPanel(chart)
+        if (mustSetLogAxis) {
+            val logAxis = LogAxis(options.yAxisLabel)
+            logAxis.base = 10.0
+            logAxis.isMinorTickMarksVisible = true
+
+            logAxis.isAutoRange = true
+            chartPanel.chart.xyPlot.rangeAxis = logAxis
+        }
+        return this
+    }
+
+    override fun setLogAxis(logAxis: Boolean): ChartBuilder {
+        mustSetLogAxis = logAxis
         return this
     }
 

@@ -3,16 +3,18 @@ package it.matteobarbera.charts
 import charts.ChartBuilder
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartPanel
+import org.jfree.chart.axis.LogAxis
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.data.category.DefaultCategoryDataset
 import org.jfree.data.xy.XYSeries
 import java.awt.Toolkit
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
+import java.text.DecimalFormat
+import java.text.FieldPosition
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
-
-
+import kotlin.math.log10
 
 
 class BarsChartBuilder(
@@ -30,7 +32,7 @@ class BarsChartBuilder(
 
     private var categories = mutableSetOf<String>()
     private var dataMap = mutableMapOf<String, MutableMap<String, Double>>()
-
+    private var mustSetLogAxis = false
     override fun seriesName(seriesName: String): BarsChartBuilder {
         options.seriesName = seriesName
         return this
@@ -118,8 +120,45 @@ class BarsChartBuilder(
         )
 
         chartPanel = ChartPanel(barChart)
+        if (mustSetLogAxis) {
+            val logAxis = LogAxis(options.yAxisLabel)
+            logAxis.base = 10.0
+            logAxis.isMinorTickMarksVisible = true
+            logAxis.isAutoRange = true
+            logAxis.numberFormatOverride = object : DecimalFormat("0.##") {
+                private val sciFormat = DecimalFormat("0E0") // Exponential form like 1E-1
+
+                override fun format(number: Double, toAppendTo: StringBuffer, pos: FieldPosition): StringBuffer {
+                    return when {
+                        number >= 1.0 -> {
+                            val logValue = log10(number)
+                            if (logValue % 1.0 == 0.0) {
+                                toAppendTo.append(number.toInt()) // Show integer power of 10
+                            } else {
+                                super.format(number.toInt(), toAppendTo, pos) // Round and format normally
+                            }
+                        }
+                        number == 0.0 -> super.format(number.toInt(), toAppendTo, pos)
+                        number > 0.0 -> {
+                            sciFormat.format(number, toAppendTo, pos) // Exponential format for numbers < 1
+                        }
+                        else -> {
+                            super.format(number, toAppendTo, pos) // Just in case (though log scale skips zero)
+                        }
+                    }
+                }
+            }
+            chartPanel.chart.categoryPlot.rangeAxis = logAxis
+            return this
+        }
         return this
     }
+
+    override fun setLogAxis(logAxis: Boolean): BarsChartBuilder {
+        this.mustSetLogAxis = logAxis
+        return this
+    }
+
     fun getPanel(): ChartPanel {
         return chartPanel
     }

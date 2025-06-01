@@ -16,5 +16,6 @@ interface ChartBuilder {
     fun panelSize(width: Int, height: Int): ChartBuilder
     fun getOptions(): ChartOptions
     fun build(): ChartBuilder
+    fun setLogAxis(logAxis: Boolean): ChartBuilder
     fun show()
 }
