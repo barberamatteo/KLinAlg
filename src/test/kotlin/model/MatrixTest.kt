@@ -170,19 +170,87 @@ class MatrixTest {
         assertEquals(m1 dot m2, valExpected)
     }
 
-    /*@Test
-    fun conditionNumber(){
-        //val spa1 = MtxFileParser.parse("src/test/resources/dati/spa1.mtx")
-        val spa2 = MtxFileParser.parse("src/test/resources/dati/spa2.mtx")
-        //val vem1 = MtxFileParser.parse("src/test/resources/dati/vem1.mtx")
-        //val vem2 = MtxFileParser.parse("src/test/resources/dati/vem2.mtx")
+    @Test
+    fun getColumnTest(){
+        val vals = arrayOf(
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0)
+        )
 
-        val a = Matrix.toJamaMatrix(spa2)
-        a.eig()
+        val m = Matrix(vals)
+        assertEquals(
+            m.getColumn(1),
+            Matrix(doubleArrayOf(2.0, 2.0, 2.0), asColumnVector = true)
+        )
+    }
 
-        //println("Cond spa1 : ${spa1.conditionNumber()}")
-        //println("Cond vem1 : ${vem1.conditionNumber()}")
-        //println("Cond vem2 : ${vem2.conditionNumber()}")
+    @Test
+    fun setRowTest(){
+        val vals = arrayOf(
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0)
+        )
 
-    }*/
+        val vals2 = arrayOf(
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(7.0, 7.0, 7.0),
+            doubleArrayOf(1.0, 2.0, 3.0)
+        )
+
+        val m = Matrix(vals)
+        val row = Matrix(doubleArrayOf(7.0, 7.0, 7.0), asColumnVector = false)
+        val m1 = Matrix(vals2)
+
+        m.setRow(1, row)
+        assertEquals(m, m1)
+
+    }
+
+    @Test
+    fun setColumnTest(){
+        val vals = arrayOf(
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0),
+            doubleArrayOf(1.0, 2.0, 3.0)
+        )
+
+        val vals2 = arrayOf(
+            doubleArrayOf(1.0, 7.0, 3.0),
+            doubleArrayOf(1.0, 7.0, 3.0),
+            doubleArrayOf(1.0, 7.0, 3.0)
+        )
+
+        val m = Matrix(vals)
+        val col = Matrix(doubleArrayOf(7.0, 7.0, 7.0), asColumnVector = true)
+        val m1 = Matrix(vals2)
+
+        m.setColumn(1, col)
+        assertEquals(m, m1)
+
+    }
+
+
+    @Test
+    fun subMatrixTest(){
+        val vals = arrayOf(
+            doubleArrayOf(1.0, 2.0, 3.0, 18.0),
+            doubleArrayOf(1.0, 2.0, 3.0, 37.0),
+            doubleArrayOf(1.0, 2.0, 3.0, 82.0),
+            doubleArrayOf(1.0, 2.0, 3.0, 66.0)
+        )
+        val vals1 = arrayOf(
+            doubleArrayOf(2.0, 3.0, 18.0),
+            doubleArrayOf(2.0, 3.0, 37.0),
+            doubleArrayOf(2.0, 3.0, 82.0)
+        )
+        val m = Matrix(vals)
+        val m1 = Matrix(vals1)
+        assertEquals(
+            m1,
+            m.subMatrix(0, 2, 1, 3)
+        )
+
+    }
 }

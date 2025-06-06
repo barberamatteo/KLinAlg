@@ -189,12 +189,137 @@ class Matrix(val rows: Int, val cols: Int){
                             "To get the scalar at the desired index, use the access operator [<index>]." +
                             "Returning the original vector (ignoring i)."
                 )
-        } catch (e: RuntimeException){
+        } catch (_: RuntimeException){
             return this
         }
 
         return Matrix(vals = Array(size = 1) { vals[i] })
     }
+
+
+    /**
+     * @return The [j]-th column of this matrix as a [Matrix] object column vector.
+     * @throws RuntimeException if the calling structure is a row vector or a column vector.
+     */
+    fun getColumn(j: Int): Matrix{
+        try{
+            if (isColumnVector)
+                throw RuntimeException(
+                    "Calling structure is already a column vector." +
+                            "Returning the entire vector (ignoring i).)"
+                )
+        } catch (e: RuntimeException){
+            return this
+        }
+
+        try {
+            if (isRowVector)
+                throw RuntimeException(
+                    "Calling structure is a row vector." +
+                            "To get the scalar at the desired index, use the access operator [<index>]." +
+                            "Returning the original vector (ignoring i)."
+                )
+        } catch (_: RuntimeException){
+            return this
+        }
+        val toRet = Matrix(rows, 1)
+        for (i in 0 until rows)
+            toRet[i] = vals[i][j]
+        return toRet
+    }
+
+    /**
+     *
+     * @return The submatrix specified by the indeces
+     * @param si Starting row index
+     * @param ei Ending row index (inclusive)
+     * @param sj Starting column index
+     * @param ej Ending column index (inclusive)
+     */
+    fun subMatrix(si: Int, ei: Int, sj: Int, ej: Int): Matrix {
+        val toRet = Matrix(ei - si + 1, ej - sj + 1)
+        for (i in 0 until ei - si + 1){
+            for (j in 0 until ej - sj + 1){
+                toRet[i, j] = vals[i + si][j + sj]
+            }
+        }
+        return toRet
+    }
+
+    /**
+     * Copies the [mtx] values starting by the [si] and [sj] indices
+     * @param si Starting row index
+     * @param sj Starting column index
+     */
+    fun setSubMatrix(si: Int, sj: Int, mtx: Matrix) {
+        for (i in 0 until mtx.rows){
+            for (j in 0 until mtx.cols){
+                vals[si + i][sj + j] = mtx[i, j]
+            }
+        }
+
+    }
+    /**
+     * Sets the [i]-th row of this matrix to [row].
+     * @throws RuntimeException if the calling strucutre is a vector, or the provided [i] is equals or
+     *                          greater than the calling structure's rows.
+     */
+    fun setRow(i: Int, row: Matrix){
+        try{
+            if (isRowVector || isColumnVector)
+                throw RuntimeException(
+                    "Calling structure is a vector." +
+                            "To get the scalar at the desired index, use the access operator [<index>]." +
+                            "Returning the original vector (ignoring i)."
+                )
+        } catch (_: RuntimeException){
+            return
+        }
+        try {
+            if (i >= rows)
+                throw RuntimeException(
+                    "Row $i doesn't exists, as matrix is a ($rows, $cols)"
+                )
+        } catch(_: RuntimeException){
+            return
+        }
+
+        for (j in 0 until row.cols)
+            vals[i][j] = row[j]
+
+    }
+
+    /**
+     * Sets the [j]-th column of this matrix to [column].
+     * @throws RuntimeException if the calling strucutre is a vector, or the provided [j] is equals or
+     *                          greater than the calling structure's cols.
+     */
+    fun setColumn(j: Int, column: Matrix){
+        try{
+            if (isRowVector || isColumnVector)
+                throw RuntimeException(
+                    "Calling structure is a vector." +
+                            "To get the scalar at the desired index, use the access operator [<index>]." +
+                            "Returning the original vector (ignoring i)."
+                )
+        } catch (_: RuntimeException){
+            return
+        }
+        try {
+            if (j >= cols)
+                throw RuntimeException(
+                    "Column $j doesn't exists, as matrix is a ($rows, $cols)"
+                )
+        } catch(_: RuntimeException){
+            return
+        }
+
+        for (i in 0 until column.rows){
+            vals[i][j] = column[i]
+        }
+
+    }
+
 
 
     /**
